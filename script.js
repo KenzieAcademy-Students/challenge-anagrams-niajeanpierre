@@ -8,8 +8,52 @@ function areAnagrams(word1, word2) {
   );
 }
 
-function findAnagrams(userWord, wordList) {
-  return wordList.filter((word) => areAnagrams(userWord, word));
+function findTwoWordAnagrams(userInput, wordList) {
+  const userWords = userInput.toLowerCase().split(" ").filter(word => word.trim() !== "");
+  const twoWordAnagrams = [];
+
+  if (userWords.length < 2) {
+    return twoWordAnagrams; // Not enough words for two-word anagrams
+  }
+
+  for (let i = 0; i < userWords.length; i++) {
+    for (let j = i + 1; j < userWords.length; j++) {
+      const word1 = userWords[i];
+      const word2 = userWords[j];
+      if (wordList.includes(word1) && wordList.includes(word2) && areAnagrams(word1, word2)) {
+        twoWordAnagrams.push(`${word1} + ${word2}`);
+      }
+    }
+  }
+
+  return twoWordAnagrams;
+}
+
+function generateMultiWordAnagrams(userInput, wordList) {
+  const userWords = userInput.toLowerCase().split(" ").filter(word => word.trim() !== "");
+  const multiWordAnagrams = [];
+
+  // Recursive function to generate multi-word anagrams
+  function findAnagrams(currentAnagram, remainingWords) {
+    if (remainingWords.length === 0) {
+      const anagram = currentAnagram.join(" + ");
+      if (wordList.includes(anagram.replace(/ /g, ""))) {
+        multiWordAnagrams.push(anagram);
+      }
+      return;
+    }
+
+    for (let i = 0; i < remainingWords.length; i++) {
+      const word = remainingWords[i];
+      const newAnagram = currentAnagram.concat(word);
+      const newRemainingWords = remainingWords.slice(0, i).concat(remainingWords.slice(i + 1));
+      findAnagrams(newAnagram, newRemainingWords);
+    }
+  }
+
+  findAnagrams([], userWords);
+
+  return multiWordAnagrams;
 }
 
 function displayResults(results, containerId) {
@@ -17,7 +61,7 @@ function displayResults(results, containerId) {
   container.innerHTML = "";
 
   if (results.length === 0) {
-    container.textContent = "No anagrams found for the given word.";
+    container.textContent = "No anagrams found for the given input.";
   } else {
     const ul = document.createElement("ul");
     results.forEach((anagram) => {
@@ -29,52 +73,16 @@ function displayResults(results, containerId) {
   }
 }
 
-function findAnagramSets(wordList, setSize) {
-  const anagramSets = {};
-  
-  // Group words by their sorted letter patterns
-  for (const word of wordList) {
-    const sortedWord = word.toLowerCase().split("").sort().join("");
-    
-    if (!anagramSets[sortedWord]) {
-      anagramSets[sortedWord] = [word];
-    } else {
-      anagramSets[sortedWord].push(word);
-    }
-  }
+document.getElementById("findTwoWordAnagrams").addEventListener("click", () => {
+  const userInput = document.getElementById("inputTextTwoWord").value.trim();
+  const twoWordAnagrams = findTwoWordAnagrams(userInput, dictionary);
 
-  // Filter anagram sets with at least 'setSize' words
-  return Object.values(anagramSets).filter(set => set.length >= setSize);
-}
-
-function displayAnagramSets(sets, containerId) {
-  const container = document.getElementById(containerId);
-  container.innerHTML = "";
-
-  if (sets.length === 0) {
-    container.textContent = `No sets of ${setSize} or more anagrams found.`;
-  } else {
-    sets.forEach(set => {
-      const ul = document.createElement("ul");
-      set.forEach(word => {
-        const li = document.createElement("li");
-        li.textContent = word;
-        ul.appendChild(li);
-      });
-      container.appendChild(ul);
-    });
-  }
-}
-
-// Find and display sets of 5 or more anagrams on page load
-const setSize = 5; // Define the set size (5 or more)
-const setsOfAnagrams = findAnagramSets(dictionary, setSize);
-displayAnagramSets(setsOfAnagrams, "anagramSets");
-
-document.getElementById("find").addEventListener("click", () => {
-  const userWord = document.getElementById("inputText").value.trim();
-  const anagramsList = findAnagrams(userWord, dictionary);
-
-  displayResults(anagramsList, "results");
+  displayResults(twoWordAnagrams, "twoWordAnagramsResults");
 });
 
+document.getElementById("findMultiWordAnagrams").addEventListener("click", () => {
+  const userInput = document.getElementById("inputTextMultiWord").value.trim();
+  const multiWordAnagrams = generateMultiWordAnagrams(userInput, dictionary);
+
+  displayResults(multiWordAnagrams, "multiWordAnagramsResults");
+});
