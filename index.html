@@ -1,35 +1,38 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <!-- Required meta tags -->
-    <meta charset="UTF-8" />
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1, shrink-to-fit=no"
-    />
+<head>
+   <!-- Required meta tags -->
+   <meta charset="UTF-8" />
+   <meta
+     name="viewport"
+     content="width=device-width, initial-scale=1, shrink-to-fit=no"
+   />
 
-    <meta name="description" content="Kenzie" />
-    <meta name="author" content="Kenzie" />
-    <meta name="keywords" content="Kenzie" />
+   <meta name="description" content="Kenzie" />
+   <meta name="author" content="Kenzie" />
+   <meta name="keywords" content="Kenzie" />
 
     <!-- Title Page -->
-    <title>Anagrams Challenge</title>
+  <title>Anagram Finder</title>
 
     <!-- CSS -->
     <link href="style.css" rel="stylesheet" media="all" />
   </head>
 
-  <body>
-    <div class="container">
-      <h1>Anagram Finder</h1>
-      <input type="text" id="inputText" placeholder="Enter a word" />
-      <button id="find">Find Anagrams</button>
-      <div id="results"></div>
-    </div>
-    <hr>
-    <div id="anagramSets"></div> <!-- New element for displaying anagram sets -->
+<body>
+  <div class="container">
+    <h1>Anagram Finder</h1>
+    <label for="inputTextTwoWord">Find Two-Word Anagrams:</label>
+    <input type="text" id="inputTextTwoWord" placeholder="Enter a word or phrase">
+    <button id="findTwoWordAnagrams">Find Anagrams</button>
+    <div id="twoWordAnagramsResults"></div>
+
+    <label for="inputTextMultiWord">Find Multi-Word Anagrams:</label>
+    <input type="text" id="inputTextMultiWord" placeholder="Enter a word or phrase">
+    <button id="findMultiWordAnagrams">Find Anagrams</button>
+    <div id="multiWordAnagramsResults"></div>
   </div>
-    <script src="words.js"></script>
-    <script src="script.js"></script>
-  </body>
+  <script src="words.js"></script>
+  <script src="script.js"></script>
+</body>
 </html>
