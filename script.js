@@ -53,7 +53,7 @@ function generateMultiWordAnagrams(userInput, wordList) {
 
   findAnagrams([], userWords);
 
-  return multiWordAnagrams;
+  return multiWordAnagrams;;
 }
 
 function displayResults(results, containerId) {
